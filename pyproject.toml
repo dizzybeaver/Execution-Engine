@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unified-gateway"
+version = "0.1.0"
+description = "A modular, multi-domain automation gateway framework (LEE + HA + Alexa + ISP + Unified)."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Joseph", email = "example@example.com" }
+]
+requires-python = ">=3.10"
+
+keywords = [
+    "automation",
+    "gateway",
+    "home-assistant",
+    "alexa",
+    "isp",
+    "unified",
+    "platform",
+    "stdlib",
+    "dependency-injection",
+    "routing",
+    "schema",
+    "cli",
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: System :: Distributed Computing",
+]
+
+# No dependencies — pure stdlib
+dependencies = []
+
+[project.urls]
+Homepage = "https://example.com/unified-gateway"
+Documentation = "https://example.com/unified-gateway/docs"
+Source = "https://example.com/unified-gateway/source"
+Issues = "https://example.com/unified-gateway/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["unified_gateway*"]
+
+[project.scripts]
+unified-cli = "unified_gateway.unified.unified_cli:main"
+unified-dashboard = "unified_gateway.unified.dashboard_server_factory:main"
