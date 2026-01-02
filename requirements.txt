@@ -1,0 +1,25 @@
+# EE Flask Server Requirements
+# Web interface dependencies
+
+# Flask Core
+Flask==3.0.0
+Werkzeug==3.0.1
+
+# WebSocket Support
+Flask-SocketIO==5.3.6
+python-socketio==5.11.0
+simple-websocket==1.0.0
+
+# YAML Configuration
+PyYAML==6.0.1
+
+# Development Dependencies
+flask-cors==4.0.0
+
+# Optional: Production Server
+gunicorn==21.2.0
+eventlet==0.33.3
+
+# Optional: Enhanced Features
+# redis==5.0.1  # For Redis cache
+# python-dotenv==1.0.0  # For environment variables
