@@ -11,7 +11,7 @@ from typing import Dict, Any
 
 def check_system_health(**kwargs) -> Dict[str, Any]:
     """Comprehensive system-wide health check for all 12 interfaces."""
-    from diagnosis.health import (
+    from diagnosis import (
         check_initialization_health,
         check_utility_health,
         check_singleton_health

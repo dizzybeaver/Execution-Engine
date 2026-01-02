@@ -1,21 +1,8 @@
 """
 __init__.py - Lambda Execution Engine Package Initialization
-Version: 2025.10.14.01
-Description: Package entry point that exports all gateway functions and interfaces
-
-Copyright 2025 Joseph Hersey
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Version: 2025-12-14_1
+Purpose: Package entry point that exports all gateway functions and interfaces
+License: Apache 2.0
 """
 
 # Import all gateway exports - gateway.py is the SUGA hub
@@ -23,28 +10,10 @@ from gateway import (
     # Core
     GatewayInterface,
     execute_operation,
-    initialize_lambda,
     get_gateway_stats,
-    
-    # Fast Path Management
-    set_fast_path_threshold,
-    enable_fast_path,
-    disable_fast_path,
-    clear_fast_path_cache,
-    get_fast_path_stats,
-    
-    # Response Helpers
+    reset_gateway_state,
     create_error_response,
     create_success_response,
-    
-    # Configuration Helpers
-    initialize_config,
-    get_cache_config,
-    get_metrics_config,
-    
-    # Circuit Breaker Helpers
-    is_circuit_breaker_open,
-    get_circuit_breaker_state,
     
     # CACHE Interface
     cache_get,
@@ -75,6 +44,11 @@ from gateway import (
     hash_data,
     verify_hash,
     sanitize_input,
+    sanitize_for_log,
+    validate_cache_key,
+    validate_ttl,
+    validate_module_name,
+    validate_number_range,
     
     # METRICS Interface
     record_metric,
@@ -84,28 +58,63 @@ from gateway import (
     record_error_metric,
     record_cache_metric,
     record_api_metric,
+    record_response_metric,
+    record_http_metric,
+    record_circuit_breaker_metric,
+    get_response_metrics,
+    get_http_metrics,
+    get_circuit_breaker_metrics,
+    record_dispatcher_timing,
+    get_dispatcher_stats,
+    get_operation_metrics,
+    get_performance_report,
+    reset_metrics,
     
     # CONFIG Interface
+    config_initialize,
+    config_get_parameter,
+    config_set_parameter,
+    config_get_category,
+    config_get_state,
+    config_reload,
+    config_switch_preset,
+    config_load_environment,
+    config_load_file,
+    config_validate_all,
+    config_reset,
+    initialize_config,
     get_config,
     set_config,
     get_config_category,
+    get_config_state,
     reload_config,
     switch_config_preset,
-    get_config_state,
     load_config_from_environment,
     load_config_from_file,
     validate_all_config,
     
     # SINGLETON Interface
     singleton_get,
+    singleton_set,
+    singleton_register,
     singleton_has,
     singleton_delete,
     singleton_clear,
     singleton_stats,
+    singleton_get_stats,
+    singleton_reset,
+    get_memory_stats,
+    get_comprehensive_memory_stats,
+    check_lambda_memory_compliance,
+    force_memory_cleanup,
+    optimize_memory,
+    force_comprehensive_memory_cleanup,
+    emergency_memory_preserve,
     
     # INITIALIZATION Interface
     initialize_system,
     get_initialization_status,
+    initialization_get_stats,
     set_initialization_flag,
     get_initialization_flag,
     
@@ -115,8 +124,9 @@ from gateway import (
     http_post,
     http_put,
     http_delete,
-    get_http_client_state,
-    reset_http_client_state,
+    http_reset,
+    http_get_state,
+    http_reset_state,
     
     # WEBSOCKET Interface
     websocket_connect,
@@ -124,12 +134,18 @@ from gateway import (
     websocket_receive,
     websocket_close,
     websocket_request,
+    websocket_get_stats,
+    websocket_reset,
     
     # CIRCUIT_BREAKER Interface
+    is_circuit_breaker_open,
+    get_circuit_breaker_state,
     get_circuit_breaker,
     execute_with_circuit_breaker,
     get_all_circuit_breaker_states,
     reset_all_circuit_breakers,
+    get_circuit_breaker_stats,
+    reset_circuit_breaker_manager,
     
     # UTILITY Interface
     format_response,
@@ -137,13 +153,79 @@ from gateway import (
     safe_get,
     generate_uuid,
     get_timestamp,
+    utility_get_stats,
+    utility_reset,
+    render_template,
+    config_get,
     
     # DEBUG Interface
+    debug_log,
+    debug_timing,
+    generate_trace_id,
+    set_trace_context,
+    get_trace_context,
+    clear_trace_context,
+    
+    # DIAGNOSIS Interface
+    test_module_import,
+    test_import_sequence,
+    format_diagnostic_response,
+    diagnose_import_failure,
+    diagnose_system_health,
+    diagnose_component_performance,
+    diagnose_memory_usage,
+    diagnose_initialization_performance,
+    diagnose_utility_performance,
+    diagnose_singleton_performance,
+    validate_system_architecture,
+    validate_imports,
+    validate_gateway_routing,
+    run_diagnostic_suite,
     check_component_health,
     check_gateway_health,
-    diagnose_system_health,
-    run_debug_tests,
-    validate_system_architecture,
+    generate_health_report,
+    check_initialization_health,
+    check_utility_health,
+    check_singleton_health,
+    check_system_health,
+    
+    # TEST Interface
+    run_test_suite,
+    run_single_test,
+    run_component_tests,
+    test_component_operation,
+    test_invalid_operation,
+    test_missing_parameters,
+    test_graceful_degradation,
+    run_error_scenario_tests,
+    test_operation_performance,
+    test_component_performance,
+    benchmark_operation,
+    run_performance_tests,
+    test_lambda_mode,
+    test_emergency_mode,
+    test_failsafe_mode,
+    test_diagnostic_mode,
+    
+    # ZAPH Interface
+    zaph_track_operation,
+    zaph_execute,
+    zaph_register,
+    zaph_get,
+    zaph_is_hot,
+    zaph_should_protect,
+    zaph_heat_level,
+    zaph_stats,
+    zaph_hot_operations,
+    zaph_cached_operations,
+    zaph_configure,
+    zaph_config,
+    zaph_prewarm,
+    zaph_prewarm_common,
+    zaph_clear,
+    zaph_reset_counts,
+    zaph_reset_stats,
+    zaph_optimize,
 )
 
 # Re-export everything
@@ -151,28 +233,10 @@ __all__ = [
     # Core
     'GatewayInterface',
     'execute_operation',
-    'initialize_lambda',
     'get_gateway_stats',
-    
-    # Fast Path Management
-    'set_fast_path_threshold',
-    'enable_fast_path',
-    'disable_fast_path',
-    'clear_fast_path_cache',
-    'get_fast_path_stats',
-    
-    # Response Helpers
+    'reset_gateway_state',
     'create_error_response',
     'create_success_response',
-    
-    # Configuration Helpers
-    'initialize_config',
-    'get_cache_config',
-    'get_metrics_config',
-    
-    # Circuit Breaker Helpers
-    'is_circuit_breaker_open',
-    'get_circuit_breaker_state',
     
     # CACHE Interface
     'cache_get',
@@ -203,6 +267,11 @@ __all__ = [
     'hash_data',
     'verify_hash',
     'sanitize_input',
+    'sanitize_for_log',
+    'validate_cache_key',
+    'validate_ttl',
+    'validate_module_name',
+    'validate_number_range',
     
     # METRICS Interface
     'record_metric',
@@ -212,28 +281,63 @@ __all__ = [
     'record_error_metric',
     'record_cache_metric',
     'record_api_metric',
+    'record_response_metric',
+    'record_http_metric',
+    'record_circuit_breaker_metric',
+    'get_response_metrics',
+    'get_http_metrics',
+    'get_circuit_breaker_metrics',
+    'record_dispatcher_timing',
+    'get_dispatcher_stats',
+    'get_operation_metrics',
+    'get_performance_report',
+    'reset_metrics',
     
     # CONFIG Interface
+    'config_initialize',
+    'config_get_parameter',
+    'config_set_parameter',
+    'config_get_category',
+    'config_get_state',
+    'config_reload',
+    'config_switch_preset',
+    'config_load_environment',
+    'config_load_file',
+    'config_validate_all',
+    'config_reset',
+    'initialize_config',
     'get_config',
     'set_config',
     'get_config_category',
+    'get_config_state',
     'reload_config',
     'switch_config_preset',
-    'get_config_state',
     'load_config_from_environment',
     'load_config_from_file',
     'validate_all_config',
     
     # SINGLETON Interface
     'singleton_get',
+    'singleton_set',
+    'singleton_register',
     'singleton_has',
     'singleton_delete',
     'singleton_clear',
     'singleton_stats',
+    'singleton_get_stats',
+    'singleton_reset',
+    'get_memory_stats',
+    'get_comprehensive_memory_stats',
+    'check_lambda_memory_compliance',
+    'force_memory_cleanup',
+    'optimize_memory',
+    'force_comprehensive_memory_cleanup',
+    'emergency_memory_preserve',
     
     # INITIALIZATION Interface
     'initialize_system',
     'get_initialization_status',
+    'initialization_get_stats',
     'set_initialization_flag',
     'get_initialization_flag',
     
@@ -243,8 +347,9 @@ __all__ = [
     'http_post',
     'http_put',
     'http_delete',
-    'get_http_client_state',
-    'reset_http_client_state',
+    'http_reset',
+    'http_get_state',
+    'http_reset_state',
     
     # WEBSOCKET Interface
     'websocket_connect',
@@ -252,12 +357,18 @@ __all__ = [
     'websocket_receive',
     'websocket_close',
     'websocket_request',
+    'websocket_get_stats',
+    'websocket_reset',
     
     # CIRCUIT_BREAKER Interface
+    'is_circuit_breaker_open',
+    'get_circuit_breaker_state',
     'get_circuit_breaker',
     'execute_with_circuit_breaker',
     'get_all_circuit_breaker_states',
     'reset_all_circuit_breakers',
+    'get_circuit_breaker_stats',
+    'reset_circuit_breaker_manager',
     
     # UTILITY Interface
     'format_response',
@@ -265,13 +376,81 @@ __all__ = [
     'safe_get',
     'generate_uuid',
     'get_timestamp',
+    'utility_get_stats',
+    'utility_reset',
+    'render_template',
+    'config_get',
     
     # DEBUG Interface
+    'debug_log',
+    'debug_timing',
+    'generate_trace_id',
+    'set_trace_context',
+    'get_trace_context',
+    'clear_trace_context',
+    
+    # DIAGNOSIS Interface
+    'test_module_import',
+    'test_import_sequence',
+    'format_diagnostic_response',
+    'diagnose_import_failure',
+    'diagnose_system_health',
+    'diagnose_component_performance',
+    'diagnose_memory_usage',
+    'diagnose_initialization_performance',
+    'diagnose_utility_performance',
+    'diagnose_singleton_performance',
+    'validate_system_architecture',
+    'validate_imports',
+    'validate_gateway_routing',
+    'run_diagnostic_suite',
     'check_component_health',
     'check_gateway_health',
-    'diagnose_system_health',
-    'run_debug_tests',
-    'validate_system_architecture',
+    'generate_health_report',
+    'check_initialization_health',
+    'check_utility_health',
+    'check_singleton_health',
+    'check_system_health',
+    
+    # TEST Interface
+    'run_test_suite',
+    'run_single_test',
+    'run_component_tests',
+    'test_component_operation',
+    'test_invalid_operation',
+    'test_missing_parameters',
+    'test_graceful_degradation',
+    'run_error_scenario_tests',
+    'test_operation_performance',
+    'test_component_performance',
+    'benchmark_operation',
+    'run_performance_tests',
+    'test_lambda_mode',
+    'test_emergency_mode',
+    'test_failsafe_mode',
+    'test_diagnostic_mode',
+    
+    # ZAPH Interface
+    'zaph_track_operation',
+    'zaph_execute',
+    'zaph_register',
+    'zaph_get',
+    'zaph_is_hot',
+    'zaph_should_protect',
+    'zaph_heat_level',
+    'zaph_stats',
+    'zaph_hot_operations',
+    'zaph_cached_operations',
+    'zaph_configure',
+    'zaph_config',
+    'zaph_prewarm',
+    'zaph_prewarm_common',
+    'zaph_clear',
+    'zaph_reset_counts',
+    'zaph_reset_stats',
+    'zaph_optimize',
 ]
+
+__version__ = '2025-12-14_1'
 
 # EOF

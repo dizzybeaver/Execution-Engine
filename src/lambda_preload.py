@@ -1,7 +1,8 @@
 """
 lambda_preload.py - LUGS-Protected Critical Module Preloading
-Version: 2025.10.19.SELECTIVE
-Description: Preload critical modules during Lambda INIT with selective imports
+Version: 2025-12-14_1
+Purpose: Preload critical modules during Lambda INIT with selective imports
+License: Apache 2.0
 
 This module loads ONLY what we need, WHEN we need it:
 - typing: Common types used everywhere (20ms)
@@ -19,9 +20,6 @@ Performance Target:
 - Lambda INIT: 350-450ms (typing, enum, urllib3 selective, boto3 SSM selective)
 - First Request: 120-180ms (everything preloaded, just business logic)
 - Total Cold Start: 470-630ms (acceptable!)
-
-Copyright 2025 Joseph Hersey
-Licensed under Apache 2.0 (see LICENSE).
 """
 
 import os
@@ -114,6 +112,29 @@ if _USE_PARAMETER_STORE:
         _BOTO3_SSM_CLIENT = None
 else:
     _print_timing("Parameter Store DISABLED - Skipping boto3")
+
+# ===== ZAPH PREWARMING (Optional - Only If Enabled) =====
+
+_ZAPH_PREWARM_ENABLED = os.environ.get('ZAPH_PREWARM_ON_COLD_START', 'false').lower() == 'true'
+
+if _ZAPH_PREWARM_ENABLED:
+    _timing_start = time.perf_counter()
+    _print_timing("ZAPH prewarming ENABLED - Initializing fast path cache...")
+    
+    try:
+        # Import and prewarm common operations
+        from gateway import zaph_prewarm_common
+        
+        prewarmed_count = zaph_prewarm_common(correlation_id="preload")
+        
+        _zaph_time = (time.perf_counter() - _timing_start) * 1000
+        _print_timing(f"*** ZAPH prewarmed {prewarmed_count} operations: {_zaph_time:.2f}ms ***")
+        
+    except Exception as e:
+        _error_time = (time.perf_counter() - _timing_start) * 1000
+        _print_timing(f"!!! ZAPH prewarming FAILED after {_error_time:.2f}ms: {e}")
+else:
+    _print_timing("ZAPH prewarming DISABLED - Skipping fast path initialization")
 
 # ===== PRELOAD COMPLETE =====
 

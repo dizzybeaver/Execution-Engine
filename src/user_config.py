@@ -1,21 +1,8 @@
 """
 user_config.py
-Version: 2025.10.03.01
-Description: User-customizable configuration overrides for all system categories
-
-Copyright 2025 Joseph Hersey
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Version: 2025-12-14_1
+Purpose: User-customizable configuration overrides for all system categories
+License: Apache 2.0
 """
 
 USER_CUSTOM_CONFIG = {
@@ -45,7 +32,8 @@ USER_CUSTOM_CONFIG = {
             "cache": "INFO",
             "security": "INFO",
             "metrics": "INFO",
-            "circuit_breaker": "INFO"
+            "circuit_breaker": "INFO",
+            "zaph": "INFO"
         },
         "include_timestamps": True,
         "include_caller_info": True,
@@ -189,5 +177,21 @@ USER_CUSTOM_CONFIG = {
         "health_check_services": ["cache", "logging"],
         "log_initialization_stages": True,
         "initialization_log_level": "INFO"
+    },
+    
+    "zaph": {
+        "enabled": True,
+        "cache_size_limit": 100,
+        "warm_threshold": 5,
+        "hot_threshold": 20,
+        "critical_threshold": 100,
+        "prewarm_on_cold_start": True,
+        "prewarm_common_operations": True,
+        "track_heat_metrics": True,
+        "protect_hot_modules_from_unload": True,
+        "auto_optimize_interval_seconds": 300,
+        "stale_operation_timeout_seconds": 300
     }
 }
+
+# EOF
