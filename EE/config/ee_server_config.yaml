@@ -1,0 +1,100 @@
+# EE Flask Server Configuration
+# Web interface server settings
+
+server:
+  # EE Web Server
+  ee:
+    host: "0.0.0.0"
+    port: 5000
+    debug: false
+    workers: 1
+
+  # FaaS Server
+  faas:
+    host: "0.0.0.0"
+    port: 5001
+    debug: false
+    workers: 1
+
+# WebSocket Configuration
+websocket:
+  enabled: true
+  ping_interval: 20  # seconds
+  ping_timeout: 10   # seconds
+  cors_allowed_origins: "*"  # Change in production
+
+# Session Configuration
+session:
+  secret_key: "change-this-in-production"
+  session_type: "filesystem"
+  permanent_session_lifetime: 3600  # seconds
+
+# File Upload Configuration
+upload:
+  max_content_length: 16777216  # 16MB
+  upload_folder: "./uploads"
+  allowed_extensions: ['.json', '.yaml', '.txt']
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG | INFO | WARNING | ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./logs/ee_server.log"
+  max_bytes: 10485760  # 10MB
+  backup_count: 5
+
+# Metrics Configuration
+metrics:
+  enabled: true
+  update_interval: 5  # seconds
+  history_size: 100
+
+# Cache Configuration
+cache:
+  enabled: true
+  type: "simple"  # simple | redis | memcached
+  default_timeout: 300  # seconds
+
+# Security Configuration
+security:
+  csrf_enabled: true
+  csrf_secret_key: "change-this-in-production"
+  rate_limiting: true
+  rate_limit: "100 per minute"
+
+# Feature Flags
+features:
+  dashboard: true
+  test_interface: true
+  plugins: true
+  configuration: true
+  metrics: true
+  websocket: true
+
+# Plugin Configuration
+plugins:
+  # Home Assistant Plugin
+  home_assistant:
+    enabled: true
+    auto_load: true
+    config:
+      # HA connection settings (can be overridden by environment variables)
+      ha_url: null  # Use HOME_ASSISTANT_URL env var
+      ha_token: null  # Use HOME_ASSISTANT_TOKEN env var
+
+      # WebSocket settings
+      websocket_enabled: true
+      websocket_auto_connect: true
+
+      # Cache settings
+      cache_enabled: true
+      cache_ttl: 60  # seconds
+
+      # Feature flags
+      features:
+        alexa: true
+        assist: true
+        devices: true
+        services: true
+        entities: true
+        fuzzy_matching: true

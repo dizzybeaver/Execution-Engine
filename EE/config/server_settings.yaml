@@ -1,0 +1,21 @@
+# Server Configuration Addition
+# Add this section to ee_config.yaml if not present
+
+# =============================================================================
+# WEB SERVER SETTINGS
+# =============================================================================
+
+server:
+  # EE Web Server (Flask)
+  ee:
+    host: "0.0.0.0"
+    port: 5000
+    debug: false
+    workers: 1
+
+  # FaaS Server
+  faas:
+    host: "0.0.0.0"
+    port: 5001
+    debug: false
+    workers: 1
