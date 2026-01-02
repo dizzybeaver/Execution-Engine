@@ -1,0 +1,19 @@
+{
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "filesystem"
+  ],
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "Please check all plan documentation for the current work and ensure everything is 100% completed. Please check all todos and ensure everything is 100% completed. Test compile all code. Fix any issues before issuing final summary and filing your report. Use your agents."
+          }
+        ]
+      }
+    ]
+  }
+}
