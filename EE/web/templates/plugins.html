@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}Plugins - EE Web Interface{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="bi bi-plugin"></i> Plugin Management</h1>
+        <p class="text-muted">Manage EE, FaaS, and HA plugins</p>
+    </div>
+</div>
+
+<!-- Plugin Tabs -->
+<div class="row mb-3">
+    <div class="col-12">
+        <ul class="nav nav-tabs" id="pluginTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="ee-tab" data-bs-toggle="tab"
+                        data-bs-target="#ee-panel" type="button" role="tab">
+                    <i class="bi bi-cpu-fill"></i> EE Core
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="faas-tab" data-bs-toggle="tab"
+                        data-bs-target="#faas-panel" type="button" role="tab">
+                    <i class="bi bi-cloud"></i> FaaS Plugin
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="ha-tab" data-bs-toggle="tab"
+                        data-bs-target="#ha-panel" type="button" role="tab">
+                    <i class="bi bi-house-door-fill"></i> HA Plugin
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Tab Content -->
+<div class="tab-content" id="pluginTabContent">
+    <!-- EE Core Panel -->
+    <div class="tab-pane fade show active" id="ee-panel" role="tabpanel">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-cpu-fill display-4 text-primary"></i>
+                        <h4 class="mt-2">EE Core</h4>
+                        <p class="text-muted">Execution Engine Core</p>
+                        <span class="badge bg-success mb-2">Active</span>
+                        <p>Version: 1.0.0</p>
+                        <div class="btn-group w-100">
+                            <button class="btn btn-outline-secondary" disabled>Cannot disable</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-info-circle"></i> Plugin Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>Status:</th>
+                                <td><span class="badge bg-success">Active</span></td>
+                            </tr>
+                            <tr>
+                                <th>Version:</th>
+                                <td>1.0.0</td>
+                            </tr>
+                            <tr>
+                                <th>Description:</th>
+                                <td>Core execution engine with SUGA-ISP architecture</td>
+                            </tr>
+                            <tr>
+                                <th>Interfaces:</th>
+                                <td>15 interfaces (SINGLETON, UTILITY, CONFIG, etc.)</td>
+                            </tr>
+                            <tr>
+                                <th>Total Operations:</th>
+                                <td>176+ gateway functions</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FaaS Plugin Panel -->
+    <div class="tab-pane fade" id="faas-panel" role="tabpanel">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-cloud display-4 text-info"></i>
+                        <h4 class="mt-2">FaaS Plugin</h4>
+                        <p class="text-muted">Function as a Service</p>
+                        <span class="badge bg-success mb-2" id="faas-status-badge">Enabled</span>
+                        <p>Version: 1.0.0</p>
+                        <div class="btn-group w-100">
+                            <button class="btn btn-success" onclick="togglePlugin('FaaS', true)">Enable</button>
+                            <button class="btn btn-danger" onclick="togglePlugin('FaaS', false)">Disable</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-info-circle"></i> Plugin Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>Status:</th>
+                                <td><span class="badge bg-success" id="faas-info-status">Enabled</span></td>
+                            </tr>
+                            <tr>
+                                <th>Version:</th>
+                                <td>1.0.0</td>
+                            </tr>
+                            <tr>
+                                <th>Port:</th>
+                                <td>5001 (configurable)</td>
+                            </tr>
+                            <tr>
+                                <th>Description:</th>
+                                <td>Serverless function execution platform</td>
+                            </tr>
+                            <tr>
+                                <th>Features:</th>
+                                <td>Function deployment, execution, monitoring</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HA Plugin Panel -->
+    <div class="tab-pane fade" id="ha-panel" role="tabpanel">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-house-door-fill display-4 text-warning"></i>
+                        <h4 class="mt-2">HA Plugin</h4>
+                        <p class="text-muted">Home Assistant Integration</p>
+                        <span class="badge bg-success mb-2" id="ha-status-badge">Enabled</span>
+                        <p>Version: 1.0.0</p>
+                        <div class="btn-group w-100">
+                            <button class="btn btn-success" onclick="togglePlugin('HA', true)">Enable</button>
+                            <button class="btn btn-danger" onclick="togglePlugin('HA', false)">Disable</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-info-circle"></i> Plugin Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>Status:</th>
+                                <td><span class="badge bg-success" id="ha-info-status">Enabled</span></td>
+                            </tr>
+                            <tr>
+                                <th>Version:</th>
+                                <td>1.0.0</td>
+                            </tr>
+                            <tr>
+                                <th>Description:</th>
+                                <td>Home Assistant smart home integration</td>
+                            </tr>
+                            <tr>
+                                <th>Features:</th>
+                                <td>Device control, automation, scenes, WebSocket</td>
+                            </tr>
+                            <tr>
+                                <th>Configuration:</th>
+                                <td>HOME_ASSISTANT_URL, HOME_ASSISTANT_TOKEN</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+{% endblock %}

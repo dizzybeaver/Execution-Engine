@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}EE Dashboard - EE Web Interface{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="bi bi-speedometer2"></i> EE Dashboard</h1>
+        <p class="text-muted">Real-time EE engine status and metrics</p>
+    </div>
+</div>
+
+<!-- Engine Status -->
+<div class="row mb-3">
+    <div class="col-md-3">
+        <div class="card text-white bg-success" id="engine-status-card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-cpu-fill"></i> EE Engine</h5>
+                <p class="card-text display-6" id="engine-status">Running</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-gateway"></i> Gateway Calls</h5>
+                <p class="card-text display-6" id="gateway-calls">0</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-lightning-charge"></i> Avg Response</h5>
+                <p class="card-text display-6" id="avg-response">0ms</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-memory"></i> Memory</h5>
+                <p class="card-text display-6" id="memory-usage">0MB</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Interface Status -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-diagram-3"></i> Interface Status</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Interface</th>
+                                <th>Status</th>
+                                <th>Operations</th>
+                                <th>Health</th>
+                            </tr>
+                        </thead>
+                        <tbody id="interface-table">
+                            <tr>
+                                <td colspan="4" class="text-center">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Plugin Status -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-plugin"></i> Plugin Status</h5>
+            </div>
+            <div class="card-body">
+                <div class="row" id="plugin-status">
+                    <div class="col-md-4">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <h6 class="card-title">EE Core</h6>
+                                <p class="card-text">
+                                    <span class="badge bg-success">Active</span>
+                                    <span class="text-muted">v1.0.0</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <h6 class="card-title">FaaS Plugin</h6>
+                                <p class="card-text">
+                                    <span class="badge bg-success">Enabled</span>
+                                    <span class="text-muted">v1.0.0</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <h6 class="card-title">HA Plugin</h6>
+                                <p class="card-text">
+                                    <span class="badge bg-success">Enabled</span>
+                                    <span class="text-muted">v1.0.0</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Real-time Metrics -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-graph-up"></i> Real-time Metrics</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="metricsChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}FaaS Plugin - EE Web Interface{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="bi bi-cloud-fill"></i> FaaS Plugin</h1>
+        <p class="text-muted">Function as a Service - Serverless execution platform</p>
+    </div>
+</div>
+
+<!-- Plugin Status -->
+<div class="row mb-3">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Plugin Status</h5>
+                <div id="plugin-status">
+                    <span class="badge bg-success" id="status-badge">Enabled</span>
+                </div>
+                <p class="mt-2 mb-0">Version: {{ version }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Server Status</h5>
+                <div id="server-status">
+                    <span class="badge bg-secondary" id="server-badge">Unknown</span>
+                </div>
+                <p class="mt-2 mb-0">Port: {{ port }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Entities</h5>
+                <h3 id="entity-count">-</h3>
+                <p class="text-muted mb-0">Discovered entities</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Health</h5>
+                <div id="health-status">
+                    <span class="badge bg-success" id="health-badge">Healthy</span>
+                </div>
+                <p class="mt-2 mb-0" id="health-details">All checks passing</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Server Controls -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-gear-fill"></i> Server Controls</h5>
+            </div>
+            <div class="card-body">
+                <div class="btn-group" role="group">
+                    <button class="btn btn-success" onclick="startServer()">
+                        <i class="bi bi-play-fill"></i> Start Server
+                    </button>
+                    <button class="btn btn-danger" onclick="stopServer()">
+                        <i class="bi bi-stop-fill"></i> Stop Server
+                    </button>
+                    <button class="btn btn-warning" onclick="restartServer()">
+                        <i class="bi bi-arrow-clockwise"></i> Restart Server
+                    </button>
+                    <button class="btn btn-info" onclick="refreshStatus()">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh Status
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Entity Operations -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-list-ul"></i> Entity Operations</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="entity-id-input"
+                                   placeholder="Enter entity ID (e.g., light.living_room)">
+                            <button class="btn btn-primary" onclick="getEntity()">
+                                <i class="bi bi-search"></i> Get Entity
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="domain-filter"
+                                   placeholder="Filter by domain (e.g., light)">
+                            <button class="btn btn-primary" onclick="listEntities()">
+                                <i class="bi bi-filter"></i> List by Domain
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-success" onclick="discoverEntities()">
+                        <i class="bi bi-cloud-download"></i> Discover Entities
+                    </button>
+                    <button class="btn btn-secondary" onclick="listAllEntities()">
+                        <i class="bi bi-list"></i> List All Entities
+                    </button>
+                    <button class="btn btn-info" onclick="getEntitySummary()">
+                        <i class="bi bi-info-circle"></i> Entity Summary
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results Display -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-terminal"></i> Results</h5>
+            </div>
+            <div class="card-body">
+                <pre id="results-display" class="bg-dark text-light p-3 rounded"
+                     style="max-height: 400px; overflow-y: auto;">Results will appear here...</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Entity Details Modal -->
+<div class="modal fade" id="entityModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Entity Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <pre id="entity-details" class="bg-light p-3 rounded"></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// FaaS Plugin JavaScript
+
+// API base URL
+const API_BASE = '/api/faas';
+
+// Display results
+function displayResults(data) {
+    const display = document.getElementById('results-display');
+    display.textContent = JSON.stringify(data, null, 2);
+}
+
+// Show entity modal
+function showEntityModal(entity) {
+    const modal = new bootstrap.Modal(document.getElementById('entityModal'));
+    const details = document.getElementById('entity-details');
+    details.textContent = JSON.stringify(entity, null, 2);
+    modal.show();
+}
+
+// Server Controls
+async function startServer() {
+    try {
+        const response = await fetch(`${API_BASE}/server/start`, {method: 'POST'});
+        const data = await response.json();
+        displayResults(data);
+        refreshStatus();
+    } catch (error) {
+        displayResults({error: error.message});
+    }
+}
+
+async function stopServer() {
+    try {
+        const response = await fetch(`${API_BASE}/server/stop`, {method: 'POST'});
+        const data = await response.json();
+        displayResults(data);
+        refreshStatus();
+    } catch (error) {
+        displayResults({error: error.message});
+    }
+}
+
+async function restartServer() {
+    try {
+        const response = await fetch(`${API_BASE}/server/restart`, {method: 'POST'});
+        const data = await response.json();
+        displayResults(data);
+        refreshStatus();
+    } catch (error) {
+        displayResults({error: error.message});
+    }
+}
+
+async function refreshStatus() {
+    try {
+        // Get server status
+        const serverResponse = await fetch(`${API_BASE}/server/status`);
+        const serverData = await serverResponse.json();
+
+        // Update server badge
+        const serverBadge = document.getElementById('server-badge');
+        if (serverData.running) {
+            serverBadge.className = 'badge bg-success';
+            serverBadge.textContent = 'Running';
+        } else {
+            serverBadge.className = 'badge bg-secondary';
+            serverBadge.textContent = 'Stopped';
+        }
+
+        // Get health status
+        const healthResponse = await fetch(`${API_BASE}/server/health`);
+        const healthData = await healthResponse.json();
+
+        // Update health badge
+        const healthBadge = document.getElementById('health-badge');
+        const healthDetails = document.getElementById('health-details');
+        if (healthData.healthy) {
+            healthBadge.className = 'badge bg-success';
+            healthBadge.textContent = 'Healthy';
+        } else {
+            healthBadge.className = 'badge bg-danger';
+            healthBadge.textContent = 'Unhealthy';
+        }
+
+        // Get plugin status
+        const statusResponse = await fetch(`${API_BASE}/status`);
+        const statusData = await statusResponse.json();
+
+        // Update entity count
+        const entityCount = document.getElementById('entity-count');
+        entityCount.textContent = statusData.entity_count || 0;
+
+    } catch (error) {
+        console.error('Error refreshing status:', error);
+    }
+}
+
+// Entity Operations
+async function discoverEntities() {
+    try {
+        const response = await fetch(`${API_BASE}/entities/discover`, {method: 'POST'});
+        const data = await response.json();
+        displayResults(data);
+        refreshStatus();
+    } catch (error) {
+        displayResults({error: error.message});
+    }
+}
+
+async function getEntity() {
+    const entityId = document.getElementById('entity-id-input').value;
+    if (!entityId) {
+        displayResults({error: 'Please enter an entity ID'});
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/entities/${encodeURIComponent(entityId)}`);
+        const data = await response.json();
+
+        if (data.found) {
+            showEntityModal(data.entity);
+            displayResults(data);
+        } else {
+            displayResults({error: 'Entity not found', entity_id: entityId});
+        }
+    } catch (error) {
+        displayResults({error: error.message});
+    }
+}
+
+async function listEntities() {
+    const domain = document.getElementById('domain-filter').value;
+
+    try {
+        let url = `${API_BASE}/entities`;
+        if (domain) {
+            url += `?domain=${encodeURIComponent(domain)}`;
+        }
+
+        const response = await fetch(url);
+        const data = await response.json();
+        displayResults(data);
+    } catch (error) {
+        displayResults({error: error.message});
+    }
+}
+
+async function listAllEntities() {
+    try {
+        const response = await fetch(`${API_BASE}/entities`);
+        const data = await response.json();
+        displayResults(data);
+    } catch (error) {
+        displayResults({error: error.message});
+    }
+}
+
+async function getEntitySummary() {
+    try {
+        const response = await fetch(`${API_BASE}/entities/summary`);
+        const data = await response.json();
+        displayResults(data);
+    } catch (error) {
+        displayResults({error: error.message});
+    }
+}
+
+// Auto-refresh status every 5 seconds
+setInterval(refreshStatus, 5000);
+
+// Initial status load
+document.addEventListener('DOMContentLoaded', function() {
+    refreshStatus();
+});
+</script>
+{% endblock %}
