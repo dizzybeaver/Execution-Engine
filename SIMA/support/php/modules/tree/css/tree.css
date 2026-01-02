@@ -1,0 +1,189 @@
+/**
+ * tree.css
+ * 
+ * Styling for SIMA Tree Module
+ * Version: 1.0.0
+ * Date: 2025-11-27
+ */
+
+/* Tree container */
+.tree-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    overflow: auto;
+    max-height: 600px;
+}
+
+/* Tree node */
+.tree-node {
+    padding: 2px 0;
+    user-select: none;
+}
+
+/* Directory header */
+.tree-directory-header {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    background: #f8f9fa;
+    margin-bottom: 3px;
+}
+
+.tree-directory-header:hover {
+    background: #e9ecef;
+}
+
+/* File wrapper */
+.tree-file {
+    display: flex;
+    align-items: center;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+.tree-file:hover {
+    background: #f1f3f5;
+}
+
+/* Toggle button */
+.tree-toggle {
+    display: inline-block;
+    width: 16px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Checkbox */
+.tree-checkbox {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* Label */
+.tree-label {
+    flex: 1;
+    cursor: pointer;
+}
+
+.tree-directory-header .tree-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.tree-file .tree-label {
+    color: #212529;
+}
+
+/* REF-ID badge */
+.tree-ref-id {
+    font-size: 11px;
+    color: #6c757d;
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 8px;
+    font-family: monospace;
+}
+
+/* Children container */
+.tree-children {
+    margin-left: 0;
+}
+
+/* File metadata */
+.tree-metadata {
+    font-size: 12px;
+    color: #6c757d;
+    margin-left: 5px;
+}
+
+/* Selection highlight */
+.tree-node.selected > .tree-directory-header,
+.tree-node.selected > .tree-file {
+    background: #e7f5ff;
+}
+
+/* Loading state */
+.tree-loading {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+}
+
+/* Empty state */
+.tree-empty {
+    text-align: center;
+    padding: 20px;
+    color: #adb5bd;
+}
+
+/* Tree controls */
+.tree-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.tree-controls button {
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    background: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.tree-controls button:hover {
+    background: #e9ecef;
+}
+
+.tree-controls button:active {
+    background: #dee2e6;
+}
+
+/* Statistics */
+.tree-stats {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #495057;
+}
+
+.tree-stats-item {
+    margin: 3px 0;
+}
+
+.tree-stats-label {
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tree-container {
+        font-size: 13px;
+    }
+    
+    .tree-controls {
+        flex-direction: column;
+    }
+    
+    .tree-controls button {
+        width: 100%;
+    }
+}

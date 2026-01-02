@@ -1,0 +1,329 @@
+/**
+ * sima-styles.css
+ * 
+ * Version: 5.0.0
+ * Date: 2025-11-28
+ * Purpose: Styles for SIMA Export Tool
+ * 
+ * REFACTORED: Works with UI module CSS classes
+ */
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #f5f5f5;
+    padding: 20px;
+}
+
+/* Header */
+.sima-header {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sima-header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.sima-header .description {
+    color: #666;
+    font-size: 14px;
+}
+
+.sima-header .version {
+    display: inline-block;
+    background: #e0e0e0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+/* Container */
+.sima-container {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sima-container h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+/* Form */
+.sima-form-group {
+    margin-bottom: 15px;
+}
+
+.sima-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+.sima-input,
+.sima-textarea,
+.sima-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.sima-input:focus,
+.sima-textarea:focus,
+.sima-select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.sima-textarea {
+    resize: vertical;
+}
+
+/* Buttons */
+.sima-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #45a049;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-danger {
+    background: #f44336;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #da190b;
+}
+
+/* Status messages */
+.sima-status {
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-info {
+    background: #e3f2fd;
+    color: #1976d2;
+    border-left: 4px solid #1976d2;
+}
+
+.status-success {
+    background: #e8f5e9;
+    color: #388e3c;
+    border-left: 4px solid #388e3c;
+}
+
+.status-warning {
+    background: #fff3e0;
+    color: #f57c00;
+    border-left: 4px solid #f57c00;
+}
+
+.status-error {
+    background: #ffebee;
+    color: #d32f2f;
+    border-left: 4px solid #d32f2f;
+}
+
+.status-icon {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.status-message {
+    flex: 1;
+}
+
+/* Loading indicator */
+.sima-loading {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.loading-icon {
+    font-size: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Tree view */
+.tree-container {
+    margin-top: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.tree-item {
+    padding: 5px 0;
+    margin-left: 20px;
+}
+
+.tree-item input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.tree-item.directory {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.tree-item.file {
+    color: #555;
+}
+
+/* Version and stats info */
+.version-info,
+.stats-info {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.version-info h3,
+.stats-info h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.version-info p,
+.stats-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Select all */
+.select-all {
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.select-all label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Export result */
+.export-result {
+    background: #e8f5e9;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+    border: 1px solid #4CAF50;
+}
+
+.export-result h3 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+.export-result p {
+    margin: 8px 0;
+}
+
+.download-link {
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.download-link:hover {
+    background: #45a049;
+}
+
+/* Footer */
+.sima-footer {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 12px;
+}
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .sima-container {
+        padding: 15px;
+    }
+    
+    .tree-container {
+        max-height: 300px;
+    }
+}
