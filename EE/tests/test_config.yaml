@@ -1,0 +1,127 @@
+# EE Testing Framework Configuration
+
+test_framework:
+  name: "EE Testing Framework"
+  version: "1.0.0"
+  description: "Comprehensive testing framework for EE (Execution Environment)"
+
+paths:
+  ee_src: "../src"
+  test_data: "./test_data"
+  test_reports: "./test_reports"
+  coverage_reports: "./htmlcov"
+
+test_categories:
+  unit:
+    description: "Unit tests for individual components"
+    timeout: 30
+    files:
+      - "test_interface_plugins.py"
+      - "test_interface_object_pool.py"
+      - "test_interface_network.py"
+      - "test_gateway_factory.py"
+      - "test_gateway_routing.py"
+      - "test_di_gateway.py"
+
+  integration:
+    description: "Integration tests for cross-component functionality"
+    timeout: 60
+    files:
+      - "test_integration_e2e.py"
+      - "test_integration_plugins.py"
+
+  performance:
+    description: "Performance benchmarks and timing tests"
+    timeout: 120
+    files:
+      - "test_performance_cold_start.py"
+      - "test_performance_hot_path.py"
+      - "test_performance_memory.py"
+
+  compliance:
+    description: "SUGA-ISP architecture compliance tests"
+    timeout: 45
+    files:
+      - "test_suga_isp_compliance.py"
+      - "test_import_rules.py"
+
+performance_targets:
+  cold_start:
+    target_ms: 3000
+    warning_ms: 2500
+    description: "Gateway initialization time"
+
+  hot_path:
+    target_ms: 50
+    warning_ms: 40
+    description: "Frequent operations (cache, singleton)"
+
+  memory:
+    target_mb: 80
+    warning_mb: 70
+    description: "Maximum memory usage"
+
+  gateway_routing:
+    target_ms: 1
+    warning_ms: 0.5
+    description: "Gateway execute_operation() overhead"
+
+  plugin_load:
+    target_ms: 500
+    warning_ms: 400
+    description: "Plugin initialization time"
+
+suga_isp_compliance:
+  rules:
+    - "All cross-interface calls must use execute_operation()"
+    - "All debug operations must route through GatewayInterface.DEBUG"
+    - "No internal debug helper functions (bypasses Gateway)"
+    - "No direct imports across interfaces"
+    - "All files must be <= 350 lines"
+    - "Gateway = ISP, Interfaces = Routers, Implementation = Local Network"
+
+  violation_severity:
+    CRITICAL: "Bypasses Gateway routing (architecture violation)"
+    HIGH: "Direct import across interfaces"
+    MEDIUM: "Missing debug operations"
+    LOW: "Style violations"
+
+pytest:
+  verbose: true
+  show_locals: true
+  log_level: "INFO"
+  log_cli: true
+  log_cli_level: "INFO"
+  markers:
+    unit: "Unit tests"
+    integration: "Integration tests"
+    performance: "Performance benchmarks"
+    compliance: "SUGA-ISP compliance tests"
+    slow: "Slow-running tests"
+    fast: "Fast-running tests"
+
+coverage:
+  minimum_percent: 80
+  branch_coverage: true
+  html_report: true
+  xml_report: true
+  fail_under: 80
+
+parallel_execution:
+  enabled: false
+  workers: 4
+  load_balance: true
+
+test_data:
+  mock_configs:
+    - "test_ee_config.yaml"
+    - "test_gateway_config.yaml"
+
+  mock_plugins:
+    - "test_faas_plugin.py"
+    - "test_ha_plugin.py"
+
+reporting:
+  junit_xml: "test_reports/junit.xml"
+  json_report: "test_reports/results.json"
+  html_report: "test_reports/report.html"
